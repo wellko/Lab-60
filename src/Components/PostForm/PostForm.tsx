@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {Posts} from "../../types";
+import Button from '@mui/material/Button';
+import {TextField} from "@mui/material";
 
 const PostForm = () => {
     const url = 'http://146.185.154.90:8000/messages';
@@ -36,9 +38,9 @@ const PostForm = () => {
     return (
         <div>
             <form onSubmit={postMessage}>
-               <label>Author Name:   <input type='text' onChange={authorChange} value={post.author}/> </label>
-                <label> Message: <input type='text' onChange={messageChange} value={post.message}/></label>
-                <button type='submit'>Post</button>
+                <TextField fullWidth label="Author Name: " id="fullWidth" onChange={authorChange} value={post.author} margin='normal'/>
+                <TextField fullWidth label="Message: " id="fullWidth" onChange={messageChange} value={post.message} margin='normal'/>
+                <Button type='submit' variant='contained'>Post</Button>
             </form>
         </div>
     );

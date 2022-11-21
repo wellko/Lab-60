@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {PostsResponse} from "../../types";
 import PostBlock from "./PostBlock/PostBlock";
+import {Divider} from "@mui/material";
 
 const MessageBlock = () => {
     const [posts, setPosts] = useState<PostsResponse[]>([]);
@@ -26,7 +27,10 @@ const MessageBlock = () => {
     return (
         <div>
             {posts.map((item, index) => (
-                <PostBlock key={Math.random()} message={item.message} author={item.author} datetime={item.datetime} index={index}/>))}
+                <div key={Math.random()}>
+                <PostBlock  message={item.message} author={item.author} datetime={item.datetime} index={index}/>
+                <Divider/>
+                </div>))}
 
         </div>
     );
