@@ -1,5 +1,3 @@
-
-
 export interface Posts{
     author: string;
     message:string;

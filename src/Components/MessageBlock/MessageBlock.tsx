@@ -1,39 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import {PostsResponse} from "../../types";
 import PostBlock from "./PostBlock/PostBlock";
-import {Divider} from "@mui/material";
+import axiosApi from "../../axios-api";
 
 const MessageBlock = () => {
-    const [posts, setPosts] = useState<PostsResponse[]>([]);
+		const [posts, setPosts] = useState<PostsResponse[]>([]);
 
-    let url = 'http://146.185.154.90:8000/messages';
+		let url = 'messages';
 
-    useEffect(() => {
-        setInterval(() => {
-            const fetchData = async (urlValue: string) => {
-                const response = await fetch(urlValue);
-                if (response.ok) {
-                    const postsResponse: PostsResponse[] = await response.json();
-                    if (postsResponse.length > 0) {
-                        url = 'http://146.185.154.90:8000/messages?datetime=' + postsResponse[postsResponse.length-1]?.datetime
-                        setPosts(prev => (prev.concat(postsResponse).reverse()));
-                    }
-                }
-            };
-            fetchData(url).catch(e => console.error(e))
-        }, 2000)
+		useEffect(() => {
+			setInterval(() => {
+				const fetchData = async (urlValue: string) => {
+					const response = await axiosApi.get(urlValue);
+					const postsResponse: PostsResponse[] = response.data;
+					if (postsResponse.length > 0) {
+						url = 'messages?datetime=' + postsResponse[postsResponse.length - 1]?.datetime
+						setPosts(prev => (prev.concat(postsResponse).reverse()));
+					}
+				};
+				fetchData(url).catch(e => console.error(e))
+			}, 2000)
 
-    }, []);
-    return (
-        <div>
-            {posts.map((item, index) => (
-                <div key={Math.random()}>
-                <PostBlock  message={item.message} author={item.author} datetime={item.datetime} index={index}/>
-                <Divider/>
-                </div>))}
-
-        </div>
-    );
-};
+		}, []);
+		return (
+			<div>
+				{(posts.length < 1)? <h1>There is no posts yet</h1> : posts.map((item, index) => (
+						<div key={Math.random()}>
+							<PostBlock message={item.message} author={item.author} datetime={item.datetime} index={index}/>
+						</div>))}
+			</div>
+		);
+	}
+;
 
 export default MessageBlock;
